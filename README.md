@@ -4,23 +4,100 @@ React native library for health connect
 
 ## Installation
 
+To install rn-health-connect, use the following command:
 
-```sh
+```bash
 npm install rn-health-connect
 ```
 
+If you are using React Native CLI template, for version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
 
-## Usage
+```diff
+package com.rnhealthconnect
 
++ import android.os.Bundle
+import com.facebook.react.ReactActivity
+import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+import com.facebook.react.defaults.DefaultReactActivityDelegate
++ import com.rnhealthconnect.permissions.HealthConnectPermissionDelegate
 
-```js
-import { multiply } from 'rn-health-connect';
+class MainActivity : ReactActivity() {
+  /**
+   * Returns the name of the main component registered from JavaScript. This is used to schedule
+   * rendering of the component.
+   */
+  override fun getMainComponentName(): String = "HealthConnectExample"
 
-// ...
++ override fun onCreate(savedInstanceState: Bundle?) {
++   super.onCreate(savedInstanceState)
++   // In order to handle permission contract results, we need to set the permission delegate.
++   HealthConnectPermissionDelegate.setPermissionDelegate(this)
++ }
 
-const result = multiply(3, 7);
+  /**
+   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
+   */
+  override fun createReactActivityDelegate(): ReactActivityDelegate =
+    DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+}
+
 ```
 
+## Example
+
+A quick example at a glance:
+
+```ts
+import {
+  initialize,
+  requestPermission,
+  readRecords,
+} from 'rn-health-connect';
+
+const readSampleData = async () => {
+  // initialize the client
+  const isInitialized = await initialize();
+
+  // request permissions
+  const grantedPermissions = await requestPermission([
+    { accessType: 'read', recordType: 'ActiveCaloriesBurned' },
+  ]);
+
+  // check if granted
+
+  const result = await readRecords('ActiveCaloriesBurned', {
+    timeRangeFilter: {
+      operator: 'between',
+      startTime: '2023-01-09T12:00:00.405Z',
+      endTime: '2023-01-09T23:53:15.405Z',
+    },
+  });
+  // {
+  //   result: [
+  //     {
+  //       startTime: '2023-01-09T12:00:00.405Z',
+  //       endTime: '2023-01-09T23:53:15.405Z',
+  //       energy: {
+  //         inCalories: 15000000,
+  //         inJoules: 62760000.00989097,
+  //         inKilojoules: 62760.00000989097,
+  //         inKilocalories: 15000,
+  //       },
+  //       metadata: {
+  //         id: '239a8cfd-990d-42fc-bffc-c494b829e8e1',
+  //         lastModifiedTime: '2023-01-17T21:06:23.335Z',
+  //         clientRecordId: null,
+  //         dataOrigin: 'com.healthconnectexample',
+  //         clientRecordVersion: 0,
+  //         device: 0,
+  //       },
+  //     },
+  //   ],
+  // }
+};
+```
 
 ## Contributing
 
