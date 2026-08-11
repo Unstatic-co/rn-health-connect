@@ -42,8 +42,8 @@ const moduleProxy = (message: string) =>
 
 const HealthConnectModule = Platform.select({
   android: isTurboModuleEnabled
-    ? require('./NativeHealthConnect').default
-    : NativeModules.HealthConnect,
+    ? require('./NativeRnHealthConnect').default
+    : NativeModules.RnHealthConnect,
   ios: moduleProxy(PLATFORM_NOT_SUPPORTED_ERROR),
   default: moduleProxy(PLATFORM_NOT_SUPPORTED_ERROR),
 });
