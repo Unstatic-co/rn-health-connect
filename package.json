@@ -1,6 +1,6 @@
 {
   "name": "rn-health-connect",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "React native library for health connect",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",

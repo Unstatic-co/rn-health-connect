@@ -10,6 +10,18 @@ To install rn-health-connect, use the following command:
 npm install rn-health-connect
 ```
 
+### Android requirements
+
+Version 1.4.0 uses Health Connect `1.2.0-alpha03` and requires:
+
+- Android API 26 or newer
+- `compileSdk` 36 with SDK extension 19
+- Android Gradle Plugin 8.9.1 or newer
+
+The library applies the Kotlin Android plugin only when the consuming Android
+Gradle Plugin does not provide built-in Kotlin, so it supports both AGP 8 and
+AGP 9 projects.
+
 If you are using React Native CLI template, for version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
 
 ```diff

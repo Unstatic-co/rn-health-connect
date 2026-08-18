@@ -1,8 +1,9 @@
 buildscript {
   ext.RnHealthConnect = [
     kotlinVersion: "2.0.21",
-    minSdkVersion: 24,
-    compileSdkVersion: 37
+    minSdkVersion: 26,
+    compileSdkVersion: 36,
+    compileSdkExtension: 19
   ]
 
   ext.getExtOrDefault = { prop ->
@@ -19,13 +20,17 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:9.1.0"
+    classpath "com.android.tools.build:gradle:8.12.0"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${RnHealthConnect.kotlinVersion}"
     // noinspection DifferentKotlinGradleVersion
   }
 }
 
 
 apply plugin: "com.android.library"
+if (extensions.findByName("kotlin") == null) {
+  apply plugin: "org.jetbrains.kotlin.android"
+}
 
 apply plugin: "com.facebook.react"
 
@@ -33,6 +38,7 @@ android {
   namespace "com.rnhealthconnect"
 
   compileSdkVersion getExtOrDefault("compileSdkVersion")
+  compileSdkExtension getExtOrDefault("compileSdkExtension")
 
   defaultConfig {
     minSdkVersion getExtOrDefault("minSdkVersion")
@@ -47,5 +53,5 @@ android {
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
-  implementation "androidx.health.connect:connect-client:1.2.0-alpha04"
+  implementation "androidx.health.connect:connect-client:1.2.0-alpha03"
 }
